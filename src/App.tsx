@@ -1,43 +1,42 @@
-import { useState } from 'react';
+import React from 'react';
 import Input from './Components/Input';
-import { USER_GET } from './EndPoints/endPoints';
-import useFetch from './Hooks/useFetch';
 import useForm from './Hooks/useForm';
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+// interface User {
+//   id: number;
+//   name: string;
+//   email: string;
+// }
 
 function App() {
-  // const senha = useForm('buceta','senha','password');
-  // const pass = useForm('pass','pass','number');
-  const { data, loading, error, request } = useFetch();
+  const email = useForm({ label: 'email', name: 'email', type: 'email' });
+  const senha = useForm({ label: 'senha', name: 'senha', type: 'password' });
+  // const { data, loading, error, request } = useFetch();
 
-
-
-  async function handleSubmit(event) {
-
+  async function handleSubmit(event: React.FormEvent<HTMLButtonElement>) {
     event.preventDefault();
-    const { url, options } = USER_GET();
-     await request(url, options);
- 
+    if (email.validate() || senha.validate()) {
+      alert("Entrou");
+    }
+    // const { url, options } = USER_GET();
+    // await request(url, options);
   }
-
 
   return (
     <>
-      {/* <Input {...senha}  />
-      <Input {...pass}  /> */}
+      <Input {...email} />
+      <Input {...senha} />
+      <button onClick={handleSubmit}>OK</button>
+      <p>{email.error}</p>
+      <p>{senha.error}</p>
 
+      {/* 
       <button onClick={handleSubmit}>aaaa</button>
-      {data.map((item:User) => (
-            <li key={item.id}>
-              {item.name}
-            </li>
-          ))}
-          
+      {data.map((item: User) => (
+        <li key={item.id}>
+          {item.name}
+        </li>
+      ))} */}
     </>
   );
 }
